@@ -1,0 +1,11 @@
+name: Juan
+version: ${project.version}
+main: com.gmail.zago.alessandro04.juan.Main
+api-version: 1.16
+softdepend: [ Vault, PlaceholderAPI ]
+authors: [ Zago, Stephirio ]
+description: This plugin is full customable ONLY JUAN
+website: https://www.spigotmc.org/members/_zago.1122869/
+commands:
+  juan:
+
