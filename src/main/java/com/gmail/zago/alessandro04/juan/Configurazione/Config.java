@@ -63,4 +63,5 @@ public class Config {
             this.plugin.msg.sendMessage(ChatColor.RED + " Ce stato un errore nel caricare il file Message.yml!");
         }
     }
+    
 }

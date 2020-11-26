@@ -3,7 +3,6 @@ package com.gmail.zago.alessandro04.juan;
 import com.gmail.zago.alessandro04.juan.Configurazione.Config;
 import com.gmail.zago.alessandro04.juan.Utilita.Utility;
 import com.gmail.zago.alessandro04.juan.commands.JuanSpawnCommand;
-import com.gmail.zago.alessandro04.juan.events.HorseEvent;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -11,6 +10,9 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Main extends JavaPlugin {
+
+
+
     public ConsoleCommandSender msg = getServer().getConsoleSender();
 
     public YamlConfiguration ConfigMessage = new YamlConfiguration();
@@ -21,7 +23,7 @@ public final class Main extends JavaPlugin {
     public String Message = ConfigMessage.getString("No-Perms-Message");
 
     public JuanSpawnCommand JS = new JuanSpawnCommand(this);
-    //collegamento a Config.java per far config ultra custom
+    //collegamento a Config.java per far config ultra customChanged code - Still not working - Beta 1.1
     public Config cf = new Config(this);
     public Utility ut = new Utility(this);
     public Config messagesConfig = new Config(this);
@@ -36,6 +38,7 @@ public final class Main extends JavaPlugin {
         msg.sendMessage(prefisso + ChatColor.GOLD + "===================================");
         cf.SetupConfigFile();
         cf.setupMessages();
+        JS.saveDefaultConfig();
         messagesConfig.ReloadConfig();
         getCommand("juan").setExecutor(new JuanSpawnCommand(this));
 
@@ -49,4 +52,5 @@ public final class Main extends JavaPlugin {
         msg.sendMessage(prefisso + ChatColor.GOLD + "Versione:" + ChatColor.GREEN + " 1.0.beta");
         msg.sendMessage(prefisso + ChatColor.GOLD + "===================================");
     }
+
 }

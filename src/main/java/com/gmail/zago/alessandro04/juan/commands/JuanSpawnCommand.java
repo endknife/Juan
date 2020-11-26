@@ -5,15 +5,60 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Vector;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 public class JuanSpawnCommand implements CommandExecutor {
     private Main plugin;
+    private File configFile = null;
+    private FileConfiguration dataConfig = null;
     public JuanSpawnCommand(Main plugin){
         this.plugin = plugin;
+    }
+
+
+    public void reloadConfig() {
+        if (configFile == null) configFile = new File(plugin.getDataFolder(), "horses.yml");
+        dataConfig = YamlConfiguration.loadConfiguration(configFile);
+        InputStream defaultStream = plugin.getResource("horses.yml");
+        if (defaultStream != null) {
+            YamlConfiguration defaultConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(defaultStream));
+            dataConfig.setDefaults(defaultConfig);
+        }
+    }
+
+
+    public FileConfiguration getConfig() {
+        if (dataConfig == null) reloadConfig();
+        return dataConfig;
+    }
+
+
+    public void saveConfig() {
+        if (dataConfig == null || configFile == null) return;
+        try {
+            getConfig().save(configFile);
+        } catch (IOException e) {
+            plugin.msg.sendMessage("Could not save the config to " + configFile);
+        }
+    }
+
+
+    public void saveDefaultConfig() {
+        if (configFile == null) configFile = new File(plugin.getDataFolder(), "horses.yml");
+        if (!configFile.exists()) plugin.saveResource("horses.yml", false);
     }
 
     @Override
@@ -23,7 +68,18 @@ public class JuanSpawnCommand implements CommandExecutor {
 
             if (p.hasPermission("juan.first.juan")){
 
+                for (Entity entity : p.getWorld().getEntities()) {
+                    if (entity.getType().equals(EntityType.HORSE) && entity.getUniqueId().toString().equals(plugin.JS.getConfig().getString(p.getUniqueId().toString()))) {
+                        p.sendMessage(plugin.prefisso + "You are so far from your Juan that he de-spawned.");
+                        entity.remove();
+                        return true;
+                    }
+                }
+
                 Horse horse = p.getWorld().spawn(p.getLocation(), Horse.class);
+                getConfig().set(String.valueOf(p.getUniqueId()), String.valueOf(horse.getEntityId()));
+                saveConfig();
+                reloadConfig();
 
                 if (plugin.getConfig().getBoolean("First-Horse-NameVisible")){
                     horse.setCustomName(plugin.ut.chatcolor(plugin.getConfig().getString("First-Horse-Name")).replace("%first-horse-name%",p.getName()));
@@ -63,8 +119,6 @@ public class JuanSpawnCommand implements CommandExecutor {
                 horse.setAdult();
                 horse.setOwner(p.getPlayer());
                 horse.getInventory().setSaddle(new ItemStack(Material.SADDLE));
-                Vector vel = new Vector(0, 0, 0);
-                horse.setVelocity(vel);
             }else{
                 p.sendMessage(plugin.ut.chatcolor(plugin.ConfigMessage.getString("No-Perms-Message")));
                 return true;
