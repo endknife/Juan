@@ -68,14 +68,6 @@ public class JuanSpawnCommand implements CommandExecutor {
 
             if (p.hasPermission("juan.first.juan")){
 
-                for (Entity entity : p.getWorld().getEntities()) {
-                    if (entity.getType().equals(EntityType.HORSE) && entity.getUniqueId().toString().equals(plugin.JS.getConfig().getString(p.getUniqueId().toString()))) {
-                        p.sendMessage(plugin.prefisso + "You are so far from your Juan that he de-spawned.");
-                        entity.remove();
-                        return true;
-                    }
-                }
-
                 Horse horse = p.getWorld().spawn(p.getLocation(), Horse.class);
                 getConfig().set(String.valueOf(p.getUniqueId()), String.valueOf(horse.getEntityId()));
                 saveConfig();

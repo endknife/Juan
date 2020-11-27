@@ -58,6 +58,7 @@ public class HorseEvent implements Listener {
     @EventHandler
     public void onPLayerDismount(VehicleExitEvent e) {
         if(e.getExited() instanceof Player) {
+            e.getVehicle().remove();
             if(e.getVehicle() instanceof Horse) {
                 Horse donkey = (Horse) e.getVehicle();
                 if(donkey.getCustomName() != null) {

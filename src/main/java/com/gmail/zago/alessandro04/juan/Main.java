@@ -3,9 +3,11 @@ package com.gmail.zago.alessandro04.juan;
 import com.gmail.zago.alessandro04.juan.Configurazione.Config;
 import com.gmail.zago.alessandro04.juan.Utilita.Utility;
 import com.gmail.zago.alessandro04.juan.commands.JuanSpawnCommand;
+import com.gmail.zago.alessandro04.juan.events.HorseEvent;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Horse;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -43,6 +45,7 @@ public final class Main extends JavaPlugin {
         JS.saveDefaultConfig();
         messagesConfig.ReloadConfig();
         getCommand("juan").setExecutor(new JuanSpawnCommand(this));
+        getServer().getPluginManager().registerEvents(new HorseEvent(this), this);
 
     }
 
