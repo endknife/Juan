@@ -58,7 +58,6 @@ public class HorseEvent implements Listener {
     @EventHandler
     public void onPLayerDismount(VehicleExitEvent e) {
         if(e.getExited() instanceof Player) {
-            e.getVehicle().remove();
             if(e.getVehicle() instanceof Horse) {
                 Horse donkey = (Horse) e.getVehicle();
                 if(donkey.getCustomName() != null) {
@@ -70,7 +69,7 @@ public class HorseEvent implements Listener {
             if(e.getVehicle() instanceof Horse) {
                 Horse horse = (Horse) e.getVehicle();
                 if(horse.getCustomName() != null) {
-                    if(horse.getCustomName().equals(ChatColor.RED + "Horse")) {
+                    if(horse.getCustomName().equals(plugin.ut.chatcolor(plugin.getConfig().getString("First-Horse-Name")).replace("%first-horse-name%",e.getExited().getName()))) {
                         horse.remove();
                     }
                     if(horse.getCustomName().equals(ChatColor.DARK_GRAY + "Horse")) {
