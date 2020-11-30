@@ -4,16 +4,23 @@ import com.gmail.zago.alessandro04.juan.Configurazione.Config;
 import com.gmail.zago.alessandro04.juan.Utilita.Utility;
 import com.gmail.zago.alessandro04.juan.commands.JuanSpawnCommand;
 import com.gmail.zago.alessandro04.juan.events.HorseEvent;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Horse;
 import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.logging.Logger;
 
 
 /** The main class of the plugin. */
 public final class Main extends JavaPlugin {
+
+    public static final Logger log = Logger.getLogger("Minecraft");
+    public static Economy econ = null;
 
 
 
@@ -35,11 +42,15 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        msg.sendMessage(prefisso + ChatColor.GOLD + "===================================");
-        msg.sendMessage(prefisso + ChatColor.DARK_GREEN + "Il plugin e stato abilitato");
-        msg.sendMessage(prefisso + ChatColor.GOLD + "creatore:" + ChatColor.GREEN + "Maseterdragon0");
-        msg.sendMessage(prefisso + ChatColor.GOLD + "Versione:" + ChatColor.GREEN + " 1.0.beta");
-        msg.sendMessage(prefisso + ChatColor.GOLD + "===================================");
+        if (!setupEconomy()) {
+            log.severe(String.format("[%s] - Not able to detect Vault.", getDescription().getName()));
+        }
+        msg.sendMessage(prefisso + ChatColor.GOLD + "<<=========================>>");
+        msg.sendMessage(prefisso + ChatColor.DARK_GREEN + "   The plugin is starting");
+        msg.sendMessage(prefisso + ChatColor.YELLOW + "   Creator: " + ChatColor.LIGHT_PURPLE + "Zago");
+        msg.sendMessage(prefisso + ChatColor.YELLOW + "   Co-Creator: " + ChatColor.LIGHT_PURPLE + "Stephirio");
+        msg.sendMessage(prefisso + ChatColor.YELLOW + "   Version: " + ChatColor.RED + "beta");
+        msg.sendMessage(prefisso + ChatColor.GOLD + "<<=========================>>");
         cf.SetupConfigFile();
         cf.setupMessages();
         JS.saveDefaultConfig();
@@ -49,13 +60,25 @@ public final class Main extends JavaPlugin {
 
     }
 
-    @Override
-    public void onDisable() {
-        msg.sendMessage(prefisso + ChatColor.GOLD + "===================================");
-        msg.sendMessage(prefisso + ChatColor.RED + "Il plugin e stato Spento con successo");
-        msg.sendMessage(prefisso + ChatColor.GOLD + "creatore:" + ChatColor.GREEN + "Maseterdragon0");
-        msg.sendMessage(prefisso + ChatColor.GOLD + "Versione:" + ChatColor.GREEN + " 1.0.beta");
-        msg.sendMessage(prefisso + ChatColor.GOLD + "===================================");
+    private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            return false;
+        }
+        econ = rsp.getProvider();
+        return econ != null;
+    }
+
+
+
+    /** Makes the vault economy API available for other classes */
+    public Economy vaultEconomy() {
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        assert rsp != null;
+        return rsp.getProvider();
     }
 
 }

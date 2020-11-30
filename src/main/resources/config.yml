@@ -78,7 +78,7 @@ First-Horse-NameVisible: true
 First-Horse-Name: '&6[&cJUAN&6] &dof &b%first-horse-name%'
 First-Horse-Glow: false
 First-Horse-Color: true
-Horse-Color: 'WHITE'
+Horse-Color: 'CHESTNUT'
 #---------------the colors available are----------------#
 #                                                       #
 #   WHITE|BLACK|BROWN|CHESTNUT|CREAMY|DARK_BROWN|GRAY   #
@@ -87,11 +87,7 @@ First-Horse-JumpStrength: true
 First-Horse-Jump: 7.00
 First-Horse-MaxHealth: true
 First-Horse-SetMaxHealth: 40
-
-First-Horse-Variant: false
-Variant-Horse:
-  - SKELETON_HORSE
-  - UNDEAD_HORSE
+First-Horse-Cost: 100.00
 
 #inserire un gui
 First-Horse-Swimming: true

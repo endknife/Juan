@@ -2,6 +2,10 @@
 First-Normal-Message-Toggle: true
 First-Normal-Message:
   '&5%player-name% get a horse %first-horse-name%'
+OnDismountMessage: '&cYou dismounted the horse'
+OnCommandPaymentMessage: 'you payed X amount of money'
+NotEnoughMoney: 'You need more money'
+
 #----------------------TITLE MESSAGE---------------------#
 First-Title-Message-Toggle: true
 First-Title-Message: '%6You get %first-horse-name%'
@@ -9,6 +13,7 @@ First-SubTitle-Message: '&3congratulation %player-name%'
 First-Tile-FadeIn: 1.0
 First-Tile-Stay: 4.0
 First-Tile-FadeOut: 2.0
+
 
 #-------------------------------------------------------#
 #                    NO PERMS MESSAGE                   #

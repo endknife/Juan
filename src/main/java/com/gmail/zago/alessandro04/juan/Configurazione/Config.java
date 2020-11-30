@@ -53,7 +53,8 @@ public class Config {
         File Message = new File(plugin.getDataFolder(), "Message.yml");
         if (!Message.exists()) {
             plugin.saveResource("Message.yml", false);
-            plugin.msg.sendMessage(plugin.prefisso + plugin.errore + ChatColor.RED + "Message.yml non trovato, creazione di quello default.");
+            plugin.msg.sendMessage(plugin.prefisso + plugin.errore + ChatColor.RED + "Message.yml non trovato, " +
+                    "creazione di quello default.");
         }
         try {
             plugin.ConfigMessage.load(Message);
